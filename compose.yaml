@@ -1,0 +1,60 @@
+services:
+  open-slots-frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    # volumes:
+    #     - .:/frontend
+ 
+    # depends_on:
+    #   - open-slots-backend
+    ports:
+      - 3000:3000
+      - 35729:35729
+    develop:
+      watch:
+        - path: ./frontend/package.json
+          action: rebuild
+        - path: ./frontend
+          target: /app
+          action: rebuild
+
+  open-slots-backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - 8000:8000
+    develop:
+      watch:
+        - path: ./backend/package.json
+          action: rebuild
+        - path: ./backend
+          target: /usr/src/open-slots-backend
+          action: sync
+
+  open-slots-database:
+      image: postgres:latest
+      environment:
+        POSTGRES_USER: postgres
+        POSTGRES_PASSWORD: admin
+        POSTGRES_DB: OpenSlotsDB
+      logging:
+        options:
+          max-size: 10m
+          max-file: "3"
+
+      volumes: 
+        - ./postgres/postgres-data:/var/lib/postgresql/data
+        # copy the sql script to create tables
+        - ./postgres/sql/create_tables.sql:/docker-entrypoint-initdb.d/create_tables.sql
+      ports:
+        - "5332:5432"
+      restart: unless-stopped
+      healthcheck:
+        test: [ "CMD-SHELL", "pg_isready -d postgres" ]
+        interval: 30s
+        timeout: 10s
+        retries: 5
+    # volumes: 
+    #  - database:/data/db
