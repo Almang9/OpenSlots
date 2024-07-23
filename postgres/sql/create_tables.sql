@@ -1,3 +1,25 @@
+-- Creation of Employee Table
+CREATE TABLE IF NOT EXISTS employee (
+  employee_id INCREMENTAL NOT NULL,
+  national_id varchar(250) NOT NULL, 
+  name varchar(250) NOT NULL
+  email varchar(250) NOT NULL,
+  lastName varchar(250) NOT NULL,
+--  shift_id INT NOT NULL,
+  shift_description text NOT NULL,
+  PRIMARY KEY (employee_id)
+  -- CONSTRAINT fk_shift
+  --     FOREIGN KEY(shift_id) 
+	--   REFERENCES shift(shift_id)
+)
+
+-- Creation of Employee Table
+CREATE TABLE IF NOT EXISTS shift (
+  shift_id INT NOT NULL,
+  name varchar(250) NOT NULL,
+  PRIMARY KEY (shift_id)
+)
+
 -- Creation of product table
 CREATE TABLE IF NOT EXISTS product (
   product_id INT NOT NULL,

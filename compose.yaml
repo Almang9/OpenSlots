@@ -44,6 +44,7 @@ services:
         - ./postgres/postgres-data:/var/lib/postgresql/data
         # copy the sql script to create tables
         - ./postgres/sql/create_tables.sql:/docker-entrypoint-initdb.d/create_tables.sql
+        - ./postgres/sql/fill_tables.sql:/docker-entrypoint-initdb.d/fill_tables.sql
       ports:
         - "5332:5432"
       restart: unless-stopped
