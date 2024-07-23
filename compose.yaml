@@ -2,12 +2,9 @@ services:
   open-slots-frontend:
     build:
       context: ./frontend
-      dockerfile: Dockerfile
-    # volumes:
-    #     - .:/frontend
- 
-    # depends_on:
-    #   - open-slots-backend
+      dockerfile: Dockerfile 
+    depends_on:
+      - open-slots-backend
     ports:
       - 3000:3000
       - 35729:35729
@@ -43,7 +40,6 @@ services:
         options:
           max-size: 10m
           max-file: "3"
-
       volumes: 
         - ./postgres/postgres-data:/var/lib/postgresql/data
         # copy the sql script to create tables
